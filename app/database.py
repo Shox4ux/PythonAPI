@@ -8,11 +8,13 @@ SQLALCHEMY_DATABASE_URL = 'postgresql://postgres:shox2005@localhost/postgres'
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False,bind=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
 # Dependency
+
+
 def get_db():
     db = SessionLocal()
     try:
