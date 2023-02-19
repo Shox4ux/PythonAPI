@@ -9,17 +9,8 @@ from ..database import engine, get_db
 router = APIRouter(prefix="/users",tags=['users'])
 
 
-
-@router.get("/", response_model=List[schemas.UserBasicResponse])
-async def get_users(user: schemas.CreateUser, db: Session = Depends(get_db)):
-
-    users = db.query(models.User).all()
-
-    return users
-
-
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserBasicResponse)
-async def create_user(user: schemas.CreateUser, db: Session = Depends(get_db)):
+def create_user(user: schemas.CreateUser, db: Session = Depends(get_db)):
 
 # Password hashshing is taking place
     user.password = functions.hash(user.password)

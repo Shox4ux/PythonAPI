@@ -1,9 +1,13 @@
+import psycopg2
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
+import psycopg2
+from psycopg2.extras import RealDictCursor
+import time
+from .confige import settings
 # SQLALCHEMY_DATABASE_URL = 'postgresql://<username>:<password>@<ip-address/hostname>/<database-name>'
-SQLALCHEMY_DATABASE_URL = 'postgresql://postgres:shox2005@localhost/postgres'
+SQLALCHEMY_DATABASE_URL = f'postgresql://{settings.database_username}:{settings.database_password}@{settings.database_hostname}:{settings.database_port}/{settings.database_name}'
 
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -21,3 +25,15 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+while True:
+    try:
+        conn = psycopg2.connect(host='localhost', database='postgres',
+                                user='postgres', password='shox2005', cursor_factory=RealDictCursor)
+        cursor = conn.cursor()
+        print('Successfully connected to database')
+        break
+    except Exception as error:
+        print('Error:', error)
+    time.sleep(3)
